@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const recipient = 'rupalsabraham112@gmail.com';
                 const subject   = encodeURIComponent(`Portfolio Message from ${name}`);
                 const body      = encodeURIComponent(
-                    `Hi Rupal,\n\nYou received a new message from your portfolio:\n\n` +
+                    `Hi RUPAL S ABRAHAM,\n\nYou received a new message from your portfolio:\n\n` +
                     `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
                 );
                 const gmailURL = `https://mail.google.com/mail/?view=cm&to=${recipient}&su=${subject}&body=${body}`;

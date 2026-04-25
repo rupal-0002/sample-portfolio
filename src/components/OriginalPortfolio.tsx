@@ -319,7 +319,7 @@ export function OriginalPortfolio() {
         const recipient = 'rupalsabraham112@gmail.com';
         const subject   = encodeURIComponent(`Portfolio Message from ${name}`);
         const body      = encodeURIComponent(
-            `Hi Rupal,\n\nYou received a new message from your portfolio:\n\n` +
+            `Hi RUPAL S ABRAHAM,\n\nYou received a new message from your portfolio:\n\n` +
             `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
         );
         const gmailURL = `https://mail.google.com/mail/?view=cm&to=${recipient}&su=${subject}&body=${body}`;
@@ -345,7 +345,7 @@ export function OriginalPortfolio() {
         {/* Navbar */}
         <nav className="navbar">
             <div className="nav-container">
-                <a href="#hero" className="logo">RUPAL</a>
+                <a href="#hero" className="logo">RUPAL S ABRAHAM</a>
                 <div className={`nav-links ${menuActive ? 'active' : ''}`}>
                     <a href="#about" onClick={() => setMenuActive(false)}>About</a>
                     <a href="#projects" onClick={() => setMenuActive(false)}>Projects</a>
@@ -362,7 +362,7 @@ export function OriginalPortfolio() {
         <section id="hero" className="hero section hidden">
             <div className="hero-content">
                 <p className="greeting">Hi, I&apos;m</p>
-                <h1 className="name">RUPAL</h1>
+                <h1 className="name">RUPAL S ABRAHAM</h1>
                 <h2 className="title">CS & AI Student | Developer</h2>
                 <p className="tagline">Passionate about Artificial Intelligence, Machine Learning, and building modern software. Currently a first-year building a strong foundation in Computer Science.</p>
                 <div className="hero-cta">
@@ -372,7 +372,7 @@ export function OriginalPortfolio() {
             </div>
             <div className="hero-graphic">
                 <div className="circle-graphic">
-                    <img src="/images/profile-new.png" alt="Rupal's Profile Photo" className="hero-profile-img" />
+                    <img src="/images/profile-new.png" alt="RUPAL S ABRAHAM's Profile Photo" className="hero-profile-img" />
                 </div>
             </div>
         </section>
@@ -382,7 +382,7 @@ export function OriginalPortfolio() {
             <h2 className="section-title">About Me</h2>
             <div className="about-content">
                 <div className="about-text">
-                    <p>Hello! I&apos;m a first-year Computer Science student specializing in Artificial Intelligence at AMAL JYOTHI COLLEGE OF ENGINEERING. I have a strong interest in understanding how machines learn and applying algorithms to solve real-world problems.</p>
+                    <p>Hello! I&apos;m RUPAL S ABRAHAM, a first-year Computer Science student specializing in Artificial Intelligence at AMAL JYOTHI COLLEGE OF ENGINEERING. I have a strong interest in understanding how machines learn and applying algorithms to solve real-world problems.</p>
                     <p>When I&apos;m not studying or building projects, you can find me reading about the tech industry, participating in hackathons, or continuously expanding my skill set to build impactful software.</p>
                 </div>
                 <div className="about-photo">
@@ -553,7 +553,7 @@ export function OriginalPortfolio() {
 
         {/* Footer */}
         <footer>
-            <p>&copy; <span id="year"></span> RUPAL. Built from scratch.</p>
+            <p>&copy; <span id="year"></span> RUPAL S ABRAHAM. Built from scratch.</p>
         </footer>
     </div>
   );
