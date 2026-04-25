@@ -541,7 +541,7 @@ a:hover {
     font-size: 0.9rem;
 }
 
-.form-group input, .form-group textarea {
+.form-group input, .form-group textarea, .form-group select {
     padding: 12px 15px;
     border-radius: 6px;
     background-color: var(--bg-color-secondary);
@@ -552,9 +552,29 @@ a:hover {
     transition: border-color var(--transition-speed) ease;
 }
 
-.form-group input:focus, .form-group textarea:focus {
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
     outline: none;
     border-color: var(--accent-color);
+}
+
+.form-group select option {
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+}
+
+.phone-input {
+    display: flex;
+    gap: 10px;
+}
+
+.phone-input select {
+    flex: 0 0 140px;
+    cursor: pointer;
+}
+
+.phone-input input {
+    flex: 1;
+    min-width: 0;
 }
 
 .submit-btn {
