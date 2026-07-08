@@ -21,7 +21,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <ReactLenis root ref={lenisRef} autoRaf={false}>
+    <ReactLenis root ref={lenisRef} options={{ autoRaf: false }}>
       {children}
     </ReactLenis>
   );

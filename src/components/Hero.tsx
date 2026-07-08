@@ -97,7 +97,7 @@ export function Hero() {
 
     // Galaxy Canvas
     const canvas = canvasRef.current;
-    let animationId: number;
+    let animationId: number = 0;
     const handleResize = () => {
       if (canvas) {
         canvas.width = window.innerWidth;

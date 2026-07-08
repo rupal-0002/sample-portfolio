@@ -36,7 +36,7 @@ export function OriginalPortfolio() {
 
     // --- White Flakes Background Animation ---
     const canvas = flakesCanvasRef.current;
-    let flakesAnimationId: number;
+    let flakesAnimationId: number = 0;
     if (canvas) {
         const ctx = canvas.getContext('2d');
         if (ctx) {
@@ -105,7 +105,7 @@ export function OriginalPortfolio() {
 
     // --- Interactive Neural Network Animation ---
     const neuralCanvas = neuralCanvasRef.current;
-    let neuralAnimationId: number;
+    let neuralAnimationId: number = 0;
     if (neuralCanvas) {
         const nCtx = neuralCanvas.getContext('2d');
         if (nCtx) {
@@ -305,7 +305,7 @@ export function OriginalPortfolio() {
     formStatusRef.current.className = 'form-status'; 
     
     const isValidEmail = (email: string) => {
-        const re = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
     }
 
@@ -316,31 +316,63 @@ export function OriginalPortfolio() {
         formStatusRef.current.textContent = 'Please enter a valid email address.';
         formStatusRef.current.classList.add('error');
     } else {
-        const recipient = 'rupalsabraham112@gmail.com';
-        const subject   = encodeURIComponent(`Portfolio Message from ${name}`);
-        const body      = encodeURIComponent(
-            `Hi RUPAL S ABRAHAM,\n\nYou received a new message from your portfolio:\n\n` +
-            `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
-        );
-        const gmailURL = `https://mail.google.com/mail/?view=cm&to=${recipient}&su=${subject}&body=${body}`;
+        const submitBtn = e.currentTarget.querySelector('.submit-btn') as HTMLButtonElement | null;
+        const btnOriginalText = submitBtn ? submitBtn.innerHTML : '';
+        
+        if (submitBtn) {
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending message...';
+            submitBtn.disabled = true;
+        }
 
-        window.open(gmailURL, '_blank');
-
-        formStatusRef.current.textContent = '✅ Gmail opened! Your message is ready to send.';
-        formStatusRef.current.classList.add('success');
-        (e.target as HTMLFormElement).reset();
-
-        setTimeout(() => {
-            if(formStatusRef.current) {
-                formStatusRef.current.textContent = '';
-                formStatusRef.current.classList.remove('success');
+        // Send via Web3Forms API in the background
+        fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                access_key: "YOUR_WEB3FORMS_ACCESS_KEY", // Replace with your free key from web3forms.com
+                name: name,
+                email: email,
+                message: message,
+                subject: `New Portfolio Message from ${name}`
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (!formStatusRef.current) return;
+            if (data.success) {
+                formStatusRef.current.textContent = '✓ Message sent successfully!';
+                formStatusRef.current.className = 'form-status success';
+                (e.target as HTMLFormElement).reset();
+            } else {
+                formStatusRef.current.textContent = 'Error: ' + data.message;
+                formStatusRef.current.className = 'form-status error';
             }
-        }, 6000);
+        })
+        .catch(error => {
+            if (!formStatusRef.current) return;
+            formStatusRef.current.textContent = 'Something went wrong. Please try again.';
+            formStatusRef.current.className = 'form-status error';
+        })
+        .finally(() => {
+            if (submitBtn) {
+                submitBtn.innerHTML = btnOriginalText;
+                submitBtn.disabled = false;
+            }
+            setTimeout(() => {
+                if (formStatusRef.current) {
+                    formStatusRef.current.textContent = '';
+                    formStatusRef.current.className = 'form-status';
+                }
+            }, 6000);
+        });
     }
   };
 
   return (
-    <div className="original-portfolio-wrapper">
+    <div className="original-portfolio-wrapper text-[#e2e8f0]">
         <canvas id="flakesCanvas" ref={flakesCanvasRef} className="flakes-bg"></canvas>
         {/* Navbar */}
         <nav className="navbar">
@@ -361,7 +393,7 @@ export function OriginalPortfolio() {
         {/* Hero Section */}
         <section id="hero" className="hero section hidden">
             <div className="hero-content">
-                <p className="greeting">Hi, I&apos;m</p>
+                <p className="greeting">Hi, I'm</p>
                 <h1 className="name">RUPAL S ABRAHAM</h1>
                 <h2 className="title">CS & AI Student | Developer</h2>
                 <p className="tagline">Passionate about Artificial Intelligence, Machine Learning, and building modern software. Currently a first-year building a strong foundation in Computer Science.</p>
@@ -382,8 +414,8 @@ export function OriginalPortfolio() {
             <h2 className="section-title">About Me</h2>
             <div className="about-content">
                 <div className="about-text">
-                    <p>Hello! I&apos;m RUPAL S ABRAHAM, a first-year Computer Science student specializing in Artificial Intelligence at AMAL JYOTHI COLLEGE OF ENGINEERING. I have a strong interest in understanding how machines learn and applying algorithms to solve real-world problems.</p>
-                    <p>When I&apos;m not studying or building projects, you can find me reading about the tech industry, participating in hackathons, or continuously expanding my skill set to build impactful software.</p>
+                    <p>Hello! I'm RUPAL S ABRAHAM, a first-year Computer Science student specializing in Artificial Intelligence at AMAL JYOTHI COLLEGE OF ENGINEERING. I have a strong interest in understanding how machines learn and applying algorithms to solve real-world problems.</p>
+                    <p>When I'm not studying or building projects, you can find me reading about the tech industry, participating in hackathons, or continuously expanding my skill set to build impactful software.</p>
                 </div>
                 <div className="about-photo">
                     <div className="about-graphic">
@@ -394,7 +426,7 @@ export function OriginalPortfolio() {
             </div>
             
             <div className="skills-container">
-                <h3 className="skills-title"><i className="fas fa-code"></i> Skills & Technologies</h3>
+                <h3 className="skills-title"><i className="fas fa-code"></i> Skills &amp; Technologies</h3>
                 <div className="skills-grid">
                     <div className="skill-item"><i className="fab fa-python skill-icon"></i><span>Python</span></div>
                     <div className="skill-item"><i className="fas fa-c skill-icon"></i><span>C</span></div>
@@ -407,26 +439,29 @@ export function OriginalPortfolio() {
 
         {/* Projects Section */}
         <section id="projects" className="projects section hidden">
-            <h2 className="section-title">Featured Projects</h2>
+            <h2 className="section-title">Projects</h2>
+            
+            {/* Major Projects Subsection */}
+            <h3 className="projects-type-title"><i class="fas fa-rocket"></i> Major Projects</h3>
             <div className="projects-grid">
                 <div className="project-card">
                     <div className="project-img-container">
                         <img src="https://via.placeholder.com/400x250/1a1a2e/00BFFF?text=AI+Classifier" alt="AI Image Classifier Project" className="project-img" />
                     </div>
                     <div className="project-info">
-                        <h3 className="project-title">AI Image Classifier</h3>
+                        <h3 class="project-title">AI Image Classifier</h3>
                         <p className="project-desc">A deep learning model that classifies images into specific categories using convolutional neural networks (CNNs).</p>
                         <div className="project-tags">
                             <span>Python</span>
                             <span>TensorFlow</span>
                         </div>
                         <div className="project-links">
-                            <a href="https://github.com" target="_blank"><i className="fab fa-github"></i> Code</a>
-                            <a href="#" target="_blank"><i className="fas fa-external-link-alt"></i> Demo</a>
+                            <a href="https://github.com" target="_blank" rel="noopener noreferrer"><i className="fab fa-github"></i> Code</a>
+                            <a href="#" target="_blank" rel="noopener noreferrer"><i className="fas fa-external-link-alt"></i> Demo</a>
                         </div>
                     </div>
                 </div>
-                <div className="project-card">
+                <div class="project-card">
                     <div className="project-img-container">
                         <img src="https://via.placeholder.com/400x250/1a1a2e/00BFFF?text=DSA+Visualizer" alt="DSA Visualizer Project" className="project-img" />
                     </div>
@@ -438,11 +473,16 @@ export function OriginalPortfolio() {
                             <span>HTML Canvas</span>
                         </div>
                         <div className="project-links">
-                            <a href="https://github.com" target="_blank"><i className="fab fa-github"></i> Code</a>
-                            <a href="#" target="_blank"><i className="fas fa-external-link-alt"></i> Demo</a>
+                            <a href="https://github.com" target="_blank" rel="noopener noreferrer"><i className="fab fa-github"></i> Code</a>
+                            <a href="#" target="_blank" rel="noopener noreferrer"><i className="fas fa-external-link-alt"></i> Demo</a>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            {/* Minor Projects Subsection */}
+            <h3 className="projects-type-title"><i class="fas fa-folder-open"></i> Minor Projects</h3>
+            <div className="projects-grid">
                 <div className="project-card">
                     <div className="project-img-container">
                         <img src="/images/password_checker.png" alt="Password Strength Checker Project" className="project-img" />
@@ -455,7 +495,7 @@ export function OriginalPortfolio() {
                             <span>Security</span>
                         </div>
                         <div className="project-links">
-                            <a href="https://github.com/rupal-0002/password" target="_blank"><i className="fab fa-github"></i> Code</a>
+                            <a href="https://github.com/rupal-0002/password" target="_blank" rel="noopener noreferrer"><i className="fab fa-github"></i> Code</a>
                         </div>
                     </div>
                 </div>
@@ -472,7 +512,7 @@ export function OriginalPortfolio() {
                             <span>JavaScript</span>
                         </div>
                         <div className="project-links">
-                            <a href="https://github.com/rupal-0002/hangman" target="_blank"><i className="fab fa-github"></i> Code</a>
+                            <a href="https://github.com/rupal-0002/hangman" target="_blank" rel="noopener noreferrer"><i className="fab fa-github"></i> Code</a>
                         </div>
                     </div>
                 </div>
@@ -489,7 +529,7 @@ export function OriginalPortfolio() {
                         <h3 className="degree">Computer Science(AI) Engineer</h3>
                         <h4 className="university">AMAL JYOTHI COLLEGE OF ENGINEERING</h4>
                         <p className="timeline-date">2025 - 2029</p>
-                        <p className="coursework"><strong>Relevant Coursework:</strong> Introduction to AI, Data Structures & Algorithms, Object-Oriented Programming, Calculus, Linear Algebra.</p>
+                        <p className="coursework"><strong>Relevant Coursework:</strong> Introduction to AI, Data Structures &amp; Algorithms, Object-Oriented Programming, Calculus, Linear Algebra.</p>
                     </div>
                 </div>
             </div>
@@ -506,9 +546,9 @@ export function OriginalPortfolio() {
                         <i className="fas fa-envelope"></i> rupalsabraham112@gmail.com
                     </a>
                     <div className="social-links">
-                        <a href="https://www.linkedin.com/in/rupal-s-abraham-9b18a837a/" target="_blank" aria-label="LinkedIn"><i className="fab fa-linkedin"></i></a>
-                        <a href="https://github.com" target="_blank" aria-label="GitHub"><i className="fab fa-github"></i></a>
-                        <a href="https://www.instagram.com/i.rupall/?hl=en" target="_blank" aria-label="Instagram"><i className="fab fa-instagram"></i></a>
+                        <a href="https://www.linkedin.com/in/rupal-s-abraham-9b18a837a/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i className="fab fa-linkedin"></i></a>
+                        <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i className="fab fa-github"></i></a>
+                        <a href="https://www.instagram.com/i.rupall/?hl=en" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i className="fab fa-instagram"></i></a>
                     </div>
                 </div>
 

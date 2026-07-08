@@ -26,7 +26,7 @@ portfolio/
 
 This project uses placeholder data. To make it your own, open `index.html` and search for the following sections to update:
 
-1. **Brand/Logo**: Look for `<a href="#hero" class="logo">Dev<span>AI</span></a>`.
+1. **Brand/Logo**: Look for `<a href="#hero" className="logo">Dev<span>AI</span></a>`.
 2. **Hero Section**: Replace `[Your Name]` and the tagline text.
 3. **About Section**: 
    - Update `[University Name]` and the bio text.

@@ -87,40 +87,54 @@ document.addEventListener('DOMContentLoaded', () => {
                 const submitBtn = document.querySelector('.submit-btn');
                 const btnOriginalText = submitBtn.innerHTML;
                 
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Opening Gmail...';
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending message...';
                 submitBtn.disabled = true;
 
-                // Build Gmail compose URL with form data pre-filled
-                const recipient = 'rupalsabraham112@gmail.com';
-                const subject   = encodeURIComponent(`Portfolio Message from ${name}`);
-                const body      = encodeURIComponent(
-                    `Hi RUPAL S ABRAHAM,\n\nYou received a new message from your portfolio:\n\n` +
-                    `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
-                );
-                const gmailURL = `https://mail.google.com/mail/?view=cm&to=${recipient}&su=${subject}&body=${body}`;
-
-                // Open Gmail compose in a new tab
-                window.open(gmailURL, '_blank');
-
-                // Show success feedback and reset form
-                formStatus.textContent = '✅ Gmail opened! Your message is ready to send.';
-                formStatus.classList.add('success');
-                contactForm.reset();
-                submitBtn.innerHTML = btnOriginalText;
-                submitBtn.disabled = false;
-
-                // Clear success message after 6 seconds
-                setTimeout(() => {
-                    formStatus.textContent = '';
-                    formStatus.classList.remove('success');
-                }, 6000);
+                // Send via Web3Forms API in the background
+                fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        access_key: "YOUR_WEB3FORMS_ACCESS_KEY", // Replace with your free key from web3forms.com
+                        name: name,
+                        email: email,
+                        message: message,
+                        subject: `New Portfolio Message from ${name}`
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        formStatus.textContent = '✓ Message sent successfully!';
+                        formStatus.className = 'form-status success';
+                        contactForm.reset();
+                    } else {
+                        formStatus.textContent = 'Error: ' + data.message;
+                        formStatus.className = 'form-status error';
+                    }
+                })
+                .catch(error => {
+                    formStatus.textContent = 'Something went wrong. Please try again.';
+                    formStatus.className = 'form-status error';
+                })
+                .finally(() => {
+                    submitBtn.innerHTML = btnOriginalText;
+                    submitBtn.disabled = false;
+                    setTimeout(() => {
+                        formStatus.textContent = '';
+                        formStatus.className = 'form-status';
+                    }, 6000);
+                });
             }
         });
     }
 
     // Helper function to validate email format
     function isValidEmail(email) {
-        const re = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
     }
 
@@ -266,7 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Spawn signals on schedule
             if (fr % (hovered ? 7 : 22) === 0) spawnSig();
 
-            // ── Background circle ──
+            // ─── Background circle ───
             const bg = nCtx.createRadialGradient(CX, CY, 0, CX, CY, 134);
             bg.addColorStop(0, '#2d0066');
             bg.addColorStop(1, '#06020A');
@@ -282,7 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
             nCtx.lineWidth = 1.8;
             nCtx.stroke();
 
-            // ── Connections ──
+            // ─── Connections ───
             conns.forEach(({ a, b }) => {
                 const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
                 const hb = hovered ? Math.max(0, 1 - Math.hypot(mx - mX, my - mY) / 88) * 0.6 : 0;
@@ -294,7 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 nCtx.stroke();
             });
 
-            // ── Signal packets ──
+            // ─── Signal packets ───
             for (let i = sigs.length - 1; i >= 0; i--) {
                 const s = sigs[i];
                 s.t += s.spd * (hovered ? 1.9 : 1);
@@ -322,7 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 nCtx.globalAlpha = 1;
             }
 
-            // ── Nodes ──
+            // ─── Nodes ───
             allNodes.forEach(n => {
                 const dist = Math.hypot(n.x - mX, n.y - mY);
                 const hb   = hovered ? Math.max(0, 1 - dist / 72) : 0;
@@ -355,7 +369,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            // ── Orbital particles ──
+            // ─── Orbital particles ───
             orbs.forEach(o => {
                 o.a += o.spd * (hovered ? 1.6 : 1);
                 const ox = CX + Math.cos(o.a) * o.r;

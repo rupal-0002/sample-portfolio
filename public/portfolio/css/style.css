@@ -21,8 +21,6 @@
     pointer-events: none;
 }
 
-
-
 * {
     margin: 0;
     padding: 0;
@@ -244,7 +242,6 @@ a:hover {
     100% { transform: translateY(0px); }
 }
 
-
 /* --- About Section --- */
 .about-content {
     display: grid;
@@ -324,8 +321,24 @@ a:hover {
     color: var(--accent-color);
 }
 
-
 /* --- Projects Section --- */
+.projects-type-title {
+    font-size: 1.75rem;
+    color: var(--text-primary);
+    margin: 3.5rem 0 1.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.projects-type-title:first-of-type {
+    margin-top: 1.5rem;
+}
+
+.projects-type-title i {
+    color: var(--accent-color);
+}
+
 .projects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
